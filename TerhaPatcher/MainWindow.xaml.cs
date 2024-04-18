@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Octokit;
+using System.IO;
 using System.Windows;
 using Application = System.Windows.Forms.Application;
 
@@ -19,11 +20,15 @@ namespace TerhaPatcher
 
         public ILogger logger;
 
+        private GithubApi githubApi;
+
         public MainWindow()
         {
             InitializeComponent();
             this.logger = new FileLogger("patcher_log.txt");
             this.patchCreator = new PatchCreator(logger);
+            this.githubApi = new GithubApi(logger);
+            UploadPatchButton.IsEnabled = false;
         }
 
         private void OldFilesDirButton_Click(object sender, RoutedEventArgs e)
@@ -64,13 +69,13 @@ namespace TerhaPatcher
             }
         }
 
-        private void CreatePatchButton_Click(object sender, RoutedEventArgs e)
+        private async void CreatePatchButton_Click(object sender, RoutedEventArgs e)
         {
             CreatePatchButton.IsEnabled = false;
             var OutputFileZip = OutputPatchDirectory + "\\" + VersionText.Text + ".zip";
             patchCreator.CreatePatch(OldFilesDirectory, NewFilesDirectory, OutputFileZip, ProgressBarPatcher);
             CreatePatchButton.IsEnabled = true;
-
+            UploadPatchButton.IsEnabled = true;
         }
 
         private void OutputPatchDirButton_Click(object sender, RoutedEventArgs e)
@@ -83,6 +88,26 @@ namespace TerhaPatcher
                 OutputPatchDirectory = folder;
                 patchDirLabel.Content = patchDirLabel.Content + " " + folder;
             }
+        }
+
+        private async void VersionText_Loaded(object sender, RoutedEventArgs e)
+        {
+            var release = await githubApi.GetLatestRelease();
+            VersionText.Text = release;
+        }
+
+        private async void UploadPatchButton_Click(object sender, RoutedEventArgs e)
+        {
+            var OutputFileZip = OutputPatchDirectory + "\\" + VersionText.Text + ".zip";
+            if (File.Exists(OutputFileZip))
+            {
+                await githubApi.CreateReleaseUploadAsset(VersionText.Text, OutputFileZip);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Patch file not found");
+            }
+                
         }
     }
 
