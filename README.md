@@ -8,12 +8,15 @@ Te'Rha Patcher è un'applicazione progettata per semplificare la distribuzione d
 
 - Crea file patch per tutti i tipi di file: Grazie al controllo per byte, Te'Rha Patcher può generare file patch per qualsiasi tipo di file, indipendentemente dal loro formato o contenuto. Questo rende l'applicazione estremamente flessibile e adatta a una varietà di scenari di distribuzione degli aggiornamenti.
 
+- Uploader di file patch su GitHub: Te'Rha Patcher include un uploader di file patch che consente agli sviluppatori di caricare i file patch generati su GitHub. Questo semplifica notevolmente il processo di distribuzione degli aggiornamenti, consentendo agli utenti di scaricare facilmente i file patch e applicarli alla propria installazione dell'applicazione.
+
 ## Dipendenze del progetto
 Te'Rha Patcher utilizza le seguenti dipendenze:
 
 - Autofac: Un framework di dependency injection per la gestione delle dipendenze nel codice .NET.
 - ICSharpCode.SharpZipLib: Una libreria per la compressione e decompressione dei file in formato ZIP.
 - VCDIFF: Una libreria per generare e applicare file patch utilizzando il formato VCDIFF.
+- Octokit: Una libreria per interagire con l'API di GitHub.
 ## Contributi
 Se desideri contribuire a Te'Rha Patcher, sei il benvenuto! Puoi contribuire segnalando bug, proponendo nuove funzionalità o inviando pull request al repository GitHub del progetto.
 

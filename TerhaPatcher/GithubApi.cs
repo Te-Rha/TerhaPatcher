@@ -42,11 +42,16 @@ namespace TerhaPatcher
             return latest;
         }
 
-        public async Task CreateReleaseUploadAsset(string version, string zip)
+        public async Task CreateReleaseUploadAsset(string version, string zip, string[] mods)
         {
             var newRelease = new NewRelease(version);
             newRelease.Name = version;
-            newRelease.Body = "**This** is some *Markdown*";
+            newRelease.Body = "## File modificati\n";
+            newRelease.Body += "\n";
+            foreach (var mod in mods)
+            {
+                newRelease.Body += $" - {mod}\n";
+            }
             newRelease.Prerelease = false;
 
             var result = await GhClient.Repository.Release.Create("Te-Rha", "TerhaPatcher", newRelease);

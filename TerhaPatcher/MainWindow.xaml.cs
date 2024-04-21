@@ -99,9 +99,14 @@ namespace TerhaPatcher
         private async void UploadPatchButton_Click(object sender, RoutedEventArgs e)
         {
             var OutputFileZip = OutputPatchDirectory + "\\" + VersionText.Text + ".zip";
+            string[] mods = new string[NewFilesList.Items.Count];
+            for (int i = 0; i < NewFilesList.Items.Count; i++)
+            {
+                mods[i] = NewFilesList.Items[i].ToString();
+            }
             if (File.Exists(OutputFileZip))
             {
-                await githubApi.CreateReleaseUploadAsset(VersionText.Text, OutputFileZip);
+                await githubApi.CreateReleaseUploadAsset(VersionText.Text, OutputFileZip, mods);
             }
             else
             {
